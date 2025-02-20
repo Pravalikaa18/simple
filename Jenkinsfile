@@ -2,24 +2,24 @@ pipeline {
     agent any
 
     environment {
-        GITHUB_REPO = 'https://github.com/Pravalikaa18/simple.git'  // Update with your repo URL
-       // GITHUB_CREDENTIALS = 'github-credentials-id'  // Update with your GitHub credentials
+        GITHUB_REPO = 'https://github.com/Pravalikaa18/simple.git'  // URL of your GitHub repository
+        GITHUB_CREDENTIALS = 'github-credentials-id'  // The credential ID you saved earlier
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                // Clone the repository from GitHub
-                git url: "${GITHUB_REPO}"
+                checkout([$class: 'GitSCM',
+                          branches: [[name: '*/master']],
+                          userRemoteConfigs: [[url: GITHUB_REPO, credentialsId: GITHUB_CREDENTIALS]]])
             }
         }
 
         stage('Create Python Script') {
             steps {
                 script {
-                    // Create a Python script dynamically
-                    def pythonScript = '''print("Hello, pravalika!")'''
-                    writeFile(file: 'pravalika_script.py', text: pythonScript)
+                    // Create a simple Python script
+                    writeFile file: 'pravalika_script.py', text: '''print("Hello, pravalika!")'''
                 }
             }
         }
@@ -36,10 +36,14 @@ pipeline {
         stage('Commit and Push to GitHub') {
             steps {
                 script {
-                    // Git commit and push the script back to GitHub
+                    // Configure Git user identity
+                    sh 'git config --global user.email "pravalikapann987@gmail.com"'
+                    sh 'git config --global user.name "Pravalikaa18"'
+                    
+                    // Add, commit, and push changes
                     sh 'git add pravalika_script.py'
                     sh 'git commit -m "Add pravalika script"'
-                    sh 'git push origin main'  // Ensure 'main' is your default branch name
+                    sh 'git push origin master'
                 }
             }
         }
