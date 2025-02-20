@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         GITHUB_REPO = 'https://github.com/Pravalikaa18/simple.git'  // URL of your GitHub repository
-        GITHUB_CREDENTIALS = 'github-credentials-id'  // The credential ID you saved earlier
+        //GITHUB_CREDENTIALS = 'github-credentials-id'  // The credential ID you saved earlier
     }
 
     stages {
@@ -11,7 +11,7 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM',
                           branches: [[name: '*/master']],
-                          userRemoteConfigs: [[url: GITHUB_REPO, credentialsId: GITHUB_CREDENTIALS]]])
+                          userRemoteConfigs: [[url: GITHUB_REPO]])
             }
         }
 
