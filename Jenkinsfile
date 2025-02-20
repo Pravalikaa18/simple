@@ -10,7 +10,7 @@ pipeline {
 
         stage('Run Python') {
             steps {
-                sh 'python3 Pravalika_script.py'
+                sh 'python3 pravalika_script.py'
             }
         }
     }
